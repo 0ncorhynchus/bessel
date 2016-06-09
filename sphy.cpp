@@ -20,7 +20,7 @@ std::pair<std::vector<double>, std::vector<double> > sphy_array(const unsigned i
     ys[1] = (ys[0]-sin(x))/x;
 
     for (int k(2); k <= n; ++k)
-        ys[k] = (2*n-1)*ys[k-1]/x - ys[k-2];
+        ys[k] = (2*k-1)*ys[k-1]/x - ys[k-2];
     for (int k(1); k <= n; ++k)
         dots[k] = ys[k-1] - (k+1)*ys[k]/x;
 

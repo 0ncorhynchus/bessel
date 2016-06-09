@@ -20,7 +20,7 @@ std::pair<std::vector<double>, std::vector<double> > sphj_array(const unsigned i
     js[1] = (js[0]-cos(x))/x;
 
     for (int k(2); k <= n; ++k)
-        js[k] = (2*n-1)*js[k-1]/x - js[k-2];
+        js[k] = (2*k-1)*js[k-1]/x - js[k-2];
     for (int k(1); k <= n; ++k)
         dots[k] = js[k-1] - (k+1)*js[k]/x;
 
