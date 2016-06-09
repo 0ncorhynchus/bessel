@@ -1,37 +1,28 @@
 #include <cmath>
 #include "specfun.hpp"
 
-inline double sphj0(const double x) { return sin(x)/x; }
-
-std::pair<double*, double*> sphj_array(const int n, const double x) {
-    double* sj = new double[n];
-    double* dj = new double[n];
+std::pair<std::vector<double>, std::vector<double> > sphj_array(const unsigned int n, const double x) {
+    std::vector<double> js(n+1, 0.0), dots(n+1, 0.0);
 
     if (x == 0) {
-        for (int k(0); k < n; ++k) {
-            sj[k] = dj[k] = 0.0;
-        }
-        sj[0] = 1.0;
+        js[0] = 1.0;
         if (n > 0)
-            dj[1] = 1.0/3.0;
-
-        return std::pair<double*, double*>(sj, dj);
+            dots[1] = 1.0/3.0;
+        return std::make_pair(js, dots);
     }
 
-    sj[0] = sphj0(x);
-    dj[0] = (cos(x)-sj[0])/x;
+    js[0] = sin(x)/x;
+    dots[0] = cos(x)-js[0]/x;
 
     if (n == 0)
-        return std::pair<double*, double*>(sj, dj);
+        return std::make_pair(js, dots);
 
-    sj[1] = (sj[0]-cos(x))/x;
+    js[1] = (js[0]-cos(x))/x;
 
-    for (int k(2); k < n; ++k) {
-        sj[k] = (2*n+1)*sj[k-1]/x - sj[k-2];
-    }
-    for (int k(1); k < n; ++k) {
-        dj[k] = sj[k-1] - (k+1)*sj[k]/x;
-    }
+    for (int k(2); k <= n; ++k)
+        js[k] = (2*n-1)*js[k-1]/x - js[k-2];
+    for (int k(1); k <= n; ++k)
+        dots[k] = js[k-1] - (k+1)*js[k]/x;
 
-    return std::pair<double*, double*>(sj, dj);
+    return std::make_pair(js, dots);
 }
